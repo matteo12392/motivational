@@ -109,11 +109,11 @@ const MotivationPage = () => {
         </div>
       </div>
 
-      <nav className="absolute z-20 flex justify-center items-center bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg shadow-lg w-[90%] md:w-3/2 my-8 rounded-xl border-4 border-white/20 left-1/2 transform -translate-x-1/2">
+      <nav className="absolute z-20 flex justify-center items-center bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg shadow-lg w-[90%] md:w-3/2 my-8 rounded-xl border-3 border-white/20 left-1/2 transform -translate-x-1/2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-center h-16">
             <div className="flex-shrink-0">
-              <span className="text-white text-2xl font-semibold">EchoWords</span>
+              <span className="text-white/60 text-2xl font-semibold">EchoWords</span>
             </div>
           </div>
         </div>
