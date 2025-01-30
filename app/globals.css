@@ -19,7 +19,7 @@ body {
   --color4: 200, 50, 50;
   --color5: 180, 180, 50;
   --color-interactive: 140, 100, 255;
-  --circle-size: 60%;
+  --circle-size: 70%;
   --blending: hard-light;
 }
 
@@ -79,7 +79,7 @@ body {
 }
 
 .gradients-container {
-  filter: url(#goo) blur(40px);
+  filter: url(#goo) blur(30px);
   width: 100%;
   height: 100%;
   position: absolute;
