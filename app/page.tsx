@@ -1,101 +1,130 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+import React, { useState, useEffect, useRef } from 'react';
+
+// Separate client-only component for interactive elements
+const InteractiveBubble = () => {
+  const interBubbleRef = useRef<HTMLDivElement>(null);
+  const animationFrameRef = useRef<number>(0);
+
+  useEffect(() => {
+    let curX = 0;
+    let curY = 0;
+    let tgX = 0;
+    let tgY = 0;
+
+    const move = () => {
+      if (!interBubbleRef.current) return;
+
+      curX += (tgX - curX) / 20;
+      curY += (tgY - curY) / 20;
+      interBubbleRef.current.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
+      animationFrameRef.current = requestAnimationFrame(move);
+    };
+
+    const handleMouseMove = (event: MouseEvent) => {
+      tgX = event.clientX;
+      tgY = event.clientY;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    animationFrameRef.current = requestAnimationFrame(move);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, []);
+
+  return <div ref={interBubbleRef} className="interactive" />;
+};
+
+// Background SVG component
+const BackgroundSVG = () => (
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="goo">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+        <feColorMatrix
+          in="blur"
+          mode="matrix"
+          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
+          result="goo"
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+        <feBlend in="SourceGraphic" in2="goo" />
+      </filter>
+    </defs>
+  </svg>
+);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+// Client-side only wrapper component
+const ClientOnly = ({ children }: { children: React.ReactNode }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
+
+  return <>{children}</>;
+};
+
+const italianQuotes = [
+  "La vita è ciò che ti accade mentre sei occupato a fare altri progetti.",
+  "Il futuro appartiene a coloro che credono nella bellezza dei propri sogni.",
+  "Sii il cambiamento che vuoi vedere nel mondo.",
+  "La creatività è l'intelligenza che si diverte.",
+  "La felicità non è qualcosa di già pronto. Nasce dalle tue azioni.",
+  "Il modo di cominciare è smettere di parlare e iniziare a fare.",
+  "La misura dell'intelligenza è data dalla capacità di cambiare quando è necessario.",
+  "Non contano i passi che fai, ma le impronte che lasci.",
+  "La vita è un'opportunità, coglila.",
+  "Insegui i tuoi sogni."
+];
+
+const MotivationPage = () => {
+  const [quote] = useState(() =>
+    italianQuotes[Math.floor(Math.random() * italianQuotes.length)]
+  )
+
+  return (
+    <ClientOnly>
+      <div className="min-h-screen w-full relative overflow-hidden">
+      <div className="gradient-bg">
+        <BackgroundSVG />
+        <div className="gradients-container">
+          <div className="g1"></div>
+          <div className="g2"></div>
+          <div className="g3"></div>
+          <div className="g4"></div>
+          <div className="g5"></div>
+          <ClientOnly>
+            <InteractiveBubble />
+          </ClientOnly>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      <nav className="absolute z-20 flex justify-center items-center bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg shadow-lg w-[90%] md:w-3/2 my-8 rounded-xl border-4 border-white/20 left-1/2 transform -translate-x-1/2">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center h-16">
+            <div className="flex-shrink-0">
+              <span className="text-white text-2xl font-semibold">EchoWords</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div className="absolute inset-0 z-20 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white text-center">{quote}</h1>
+      </div>
     </div>
+    </ClientOnly>
   );
-}
+};
+
+export default MotivationPage;
