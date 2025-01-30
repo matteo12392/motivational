@@ -65,7 +65,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  overflow: hidden;
+  overflow: visible;
   background: linear-gradient(40deg, var(--color-bg1), var(--color-bg2));
   z-index: 1;
 }
@@ -79,7 +79,18 @@ body {
 }
 
 .gradients-container {
-  filter: url(#goo) blur(30px);
+  filter: blur(25px);
+  -webkit-filter: blur(25px);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.gradients-container-desktop {
+  filter: blur(25px);
+  -webkit-filter: blur(25px);
   width: 100%;
   height: 100%;
   position: absolute;
@@ -100,7 +111,7 @@ body {
 }
 
 .g1 {
-  background: radial-gradient(circle at center, rgba(var(--color1), 0.8) 0, rgba(var(--color1), 0) 50%) no-repeat;
+  background: radial-gradient(circle at center, rgba(var(--color1), 0.8) 0, rgba(var(--color1), 0) 80%) no-repeat;
   top: calc(50% - var(--circle-size) / 2);
   left: calc(50% - var(--circle-size) / 2);
   transform-origin: center center;
@@ -108,7 +119,7 @@ body {
 }
 
 .g2 {
-  background: radial-gradient(circle at center, rgba(var(--color2), 0.8) 0, rgba(var(--color2), 0) 50%) no-repeat;
+  background: radial-gradient(circle at center, rgba(var(--color2), 0.8) 0, rgba(var(--color2), 0) 80%) no-repeat;
   top: calc(50% - var(--circle-size) / 2);
   left: calc(50% - var(--circle-size) / 2);
   transform-origin: calc(50% - 400px);
@@ -116,7 +127,7 @@ body {
 }
 
 .g3 {
-  background: radial-gradient(circle at center, rgba(var(--color3), 0.8) 0, rgba(var(--color3), 0) 50%) no-repeat;
+  background: radial-gradient(circle at center, rgba(var(--color3), 0.8) 0, rgba(var(--color3), 0) 80%) no-repeat;
   top: calc(50% - var(--circle-size) / 2 + 200px);
   left: calc(50% - var(--circle-size) / 2 - 500px);
   transform-origin: calc(50% + 400px);
@@ -124,7 +135,7 @@ body {
 }
 
 .g4 {
-  background: radial-gradient(circle at center, rgba(var(--color4), 0.8) 0, rgba(var(--color4), 0) 50%) no-repeat;
+  background: radial-gradient(circle at center, rgba(var(--color4), 0.8) 0, rgba(var(--color4), 0) 80%) no-repeat;
   top: calc(50% - var(--circle-size) / 2);
   left: calc(50% - var(--circle-size) / 2);
   transform-origin: calc(50% - 200px);
