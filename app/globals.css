@@ -168,3 +168,9 @@ body {
   z-index: 2;
   opacity: 0.7;
 }
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}

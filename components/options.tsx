@@ -21,7 +21,17 @@ export default function Variants() {
                     ref={containerRef}
                     style={nav}
                 >
-                    <motion.div style={background} className="bg-white/20 backdrop-filter backdrop-blur-lg shadow-lg border-2 border-white/20 rounded-xl" variants={sidebarVariants} />
+                    <motion.div
+                        variants={sidebarVariants}
+                        className="absolute top-0 left-0 bottom-0 w-[300px] transition-colors duration-300 rounded-xl"
+                        style={{
+                            backgroundColor: isOpen ? 'rgba(255, 255, 255, 0.4)' : 'transparent',
+                            backdropFilter: isOpen ? 'blur(8px)' : 'none',
+                            boxShadow: isOpen ? '0 4px 6px -1px rgba(0, 0, 0, 0.1)' : 'none',
+                            borderRadius: '0.75rem',
+                            border: isOpen ? '2px solid rgba(255, 255, 255, 0.2)' : 'none'
+                        }}
+                    />
                     <Navigation />
                     <MenuToggle toggle={() => setIsOpen(!isOpen)} />
                 </motion.nav>
@@ -64,7 +74,7 @@ const itemVariants = {
     },
 }
 
-const colors = ["#7700FF", "#4400FF"]
+const colors = ["#7700FFe6", "#4400FFe6"]
 const text = ["ESPRIMI LA TUA!", "CHI SIAMO"]
 // eslint-disable-next-line react/jsx-key
 const icons = [<Lightbulb />, <Users />]
@@ -93,7 +103,7 @@ const sidebarVariants = {
             type: "spring",
             stiffness: 20,
             restDelta: 2,
-        },
+        }
     }),
     closed: {
         clipPath: "circle(30px at 40px 40px)",
@@ -102,8 +112,8 @@ const sidebarVariants = {
             type: "spring",
             stiffness: 400,
             damping: 40,
-        },
-    },
+        }
+    }
 }
 
 interface PathProps {
@@ -123,7 +133,7 @@ const Path = (props: PathProps) => (
 )
 
 const MenuToggle = ({ toggle }: { toggle: () => void }) => (
-    <button style={toggleContainer} onClick={toggle} className="flex items-center justify-center">
+    <button style={toggleContainer} onClick={toggle} className="bg-white/20 h-[50px] w-[50px] flex items-center justify-center border-2 p-2 z-60 border-white/20 hover:scale-110 transition-all">
         <svg width="23" height="23" viewBox="0 0 23 23">
             <Path
                 variants={{
@@ -170,27 +180,15 @@ const nav: React.CSSProperties = {
     width: 300,
 }
 
-const background: React.CSSProperties = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    width: 300,
-}
-
 const toggleContainer: React.CSSProperties = {
     outline: "none",
-    border: "none",
     WebkitUserSelect: "none",
     MozUserSelect: "none",
     cursor: "pointer",
     position: "absolute",
-    top: 18,
+    top: 15,
     left: 15,
-    width: 50,
-    height: 50,
     borderRadius: "50%",
-    background: "transparent",
 }
 
 const list: React.CSSProperties = {

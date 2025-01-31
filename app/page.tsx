@@ -3,6 +3,9 @@
 import { createClient } from '@/utils/supabase/client';
 import React, { useState, useEffect, useRef } from 'react';
 import Variants from '../components/options';
+import { Share } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
 
 // Separate client-only component for interactive elements
 const InteractiveBubble = () => {
@@ -78,24 +81,68 @@ const ClientOnly = ({ children }: { children: React.ReactNode }) => {
 
 const MotivationPage = () => {
   const [quote, setQuote] = useState<string>("Caricamento...");
+  const [quoteId, setQuoteId] = useState<number | null>(null);
+  const [showCopied, setShowCopied] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const fetchQuote = async () => {
       const supabase = createClient();
+      const id = searchParams.get('id');
+
+      if (id) {
+        // Fetch specific quote if ID is provided
+        const { data, error } = await supabase
+          .from("phrases")
+          .select("id, phrase")
+          .eq('id', id)
+          .single();
+
+        if (error || !data) {
+          console.error("Error fetching quote:", error?.message);
+          setQuote("Errore nel caricamento della frase.");
+          // Fallback to random quote if ID not found
+          fetchRandomQuote();
+        } else {
+          setQuote(data.phrase);
+          setQuoteId(data.id);
+        }
+      } else {
+        fetchRandomQuote();
+      }
+    };
+
+    const fetchRandomQuote = async () => {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("phrases")
-        .select("phrase");
+        .select("id, phrase");
 
       if (error) {
         console.error("Error fetching quote:", error.message);
         setQuote("Errore nel caricamento della frase.");
       } else if (data) {
-        setQuote(data[Math.floor(Math.random() * data.length)].phrase);
+        const randomQuote = data[Math.floor(Math.random() * data.length)];
+        setQuote(randomQuote.phrase);
+        setQuoteId(randomQuote.id);
+        // Update URL with the new quote ID
+        router.replace(`?id=${randomQuote.id}`);
       }
     };
 
     fetchQuote();
-  }, []);
+  }, [searchParams, router]);
+
+  const handleShare = async () => {
+    if (!quoteId) return;
+
+    const url = `${window.location.origin}?id=${quoteId}`;
+    await navigator.clipboard.writeText(url);
+    toast.success('Link copiato con successo')
+    setShowCopied(true);
+    setTimeout(() => setShowCopied(false), 2000);
+  };
 
   return (
     <ClientOnly>
@@ -115,7 +162,13 @@ const MotivationPage = () => {
         </div>
 
         <Variants />
-
+        <button
+          onClick={handleShare}
+          className={"m-4 flex justify-center items-center w-[50px] h-[50px] rounded-full absolute bottom-0 z-50 text-white/80 bg-white/20 backdrop-filter backdrop-blur-lg shadow-xl border-2 border-white/20 hover:scale-110 transition-all right-0" + (showCopied ? "hidden" : "")}
+          title="Copy link to clipboard"
+        >
+          <Share />
+        </button>
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4 sm:px-6 lg:px-8">
           <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white/80 text-center">
             {quote}
