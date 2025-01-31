@@ -1,7 +1,7 @@
 "use client"
 
 import { createClient } from '@/utils/supabase/client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import Variants from '../components/options';
 import { Share } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -79,7 +79,7 @@ const ClientOnly = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-const MotivationPage = () => {
+const MotivationContent = () => {
   const [quote, setQuote] = useState<string>("Caricamento...");
   const [quoteId, setQuoteId] = useState<number | null>(null);
   const [showCopied, setShowCopied] = useState(false);
@@ -141,40 +141,53 @@ const MotivationPage = () => {
     await navigator.clipboard.writeText(url);
     toast.success('Link copiato con successo')
     setShowCopied(true);
-    setTimeout(() => setShowCopied(false), 2000);
+    setTimeout(() => setShowCopied(false), 4500);
   };
 
   return (
-    <ClientOnly>
-      <div className="min-h-screen w-full relative overflow-hidden">
-        <div className="gradient-bg">
-          <BackgroundSVG />
-          <div className="gradients-container">
-            <div className="g1"></div>
-            <div className="g2"></div>
-            <div className="g3"></div>
-            <div className="g4"></div>
-            <div className="g5"></div>
-            <ClientOnly>
-              <InteractiveBubble />
-            </ClientOnly>
-          </div>
-        </div>
-
-        <Variants />
-        <button
-          onClick={handleShare}
-          className={"m-4 flex justify-center items-center w-[50px] h-[50px] rounded-full absolute bottom-0 z-50 text-white/80 bg-white/20 backdrop-filter backdrop-blur-lg shadow-xl border-2 border-white/20 hover:scale-110 transition-all right-0" + (showCopied ? "hidden" : "")}
-          title="Copy link to clipboard"
-        >
-          <Share />
-        </button>
-        <div className="absolute inset-0 z-20 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white/80 text-center">
-            {quote}
-          </h1>
+    <div className="min-h-screen w-full relative overflow-hidden">
+      <div className="gradient-bg">
+        <BackgroundSVG />
+        <div className="gradients-container">
+          <div className="g1"></div>
+          <div className="g2"></div>
+          <div className="g3"></div>
+          <div className="g4"></div>
+          <div className="g5"></div>
+          <ClientOnly>
+            <InteractiveBubble />
+          </ClientOnly>
         </div>
       </div>
+
+      <Variants />
+      <button
+        onClick={handleShare}
+        className={"m-4 flex justify-center items-center w-[50px] h-[50px] rounded-full absolute bottom-0 z-50 text-white/80 bg-white/20 backdrop-filter backdrop-blur-lg shadow-xl border-2 border-white/20 hover:scale-110 transition-all right-0 " + (showCopied ? "hidden" : "")}
+        title="Copy link to clipboard"
+      >
+        <Share />
+      </button>
+      <div className="absolute inset-0 z-20 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white/80 text-center">
+          {quote}
+        </h1>
+      </div>
+    </div>
+  );
+};
+
+// Main page component with Suspense boundary
+const MotivationPage = () => {
+  return (
+    <ClientOnly>
+      <Suspense fallback={
+        <div className="min-h-screen w-full flex items-center justify-center">
+          <div className="text-xl font-bold text-white/80">Caricamento...</div>
+        </div>
+      }>
+        <MotivationContent />
+      </Suspense>
     </ClientOnly>
   );
 };
