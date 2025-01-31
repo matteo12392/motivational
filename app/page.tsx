@@ -1,6 +1,8 @@
 "use client"
 
+import { createClient } from '@/utils/supabase/client';
 import React, { useState, useEffect, useRef } from 'react';
+import Variants from '../components/options';
 
 // Separate client-only component for interactive elements
 const InteractiveBubble = () => {
@@ -74,55 +76,52 @@ const ClientOnly = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-const italianQuotes = [
-  "La vita è ciò che ti accade mentre sei occupato a fare altri progetti.",
-  "Il futuro appartiene a coloro che credono nella bellezza dei propri sogni.",
-  "Sii il cambiamento che vuoi vedere nel mondo.",
-  "La creatività è l'intelligenza che si diverte.",
-  "La felicità non è qualcosa di già pronto. Nasce dalle tue azioni.",
-  "Il modo di cominciare è smettere di parlare e iniziare a fare.",
-  "La misura dell'intelligenza è data dalla capacità di cambiare quando è necessario.",
-  "Non contano i passi che fai, ma le impronte che lasci.",
-  "La vita è un'opportunità, coglila.",
-  "Insegui i tuoi sogni."
-];
-
 const MotivationPage = () => {
-  const [quote] = useState(() =>
-    italianQuotes[Math.floor(Math.random() * italianQuotes.length)]
-  )
+  const [quote, setQuote] = useState<string>("Caricamento...");
+
+  useEffect(() => {
+    const fetchQuote = async () => {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("phrases")
+        .select("phrase");
+
+      if (error) {
+        console.error("Error fetching quote:", error.message);
+        setQuote("Errore nel caricamento della frase.");
+      } else if (data) {
+        setQuote(data[Math.floor(Math.random() * data.length)].phrase);
+      }
+    };
+
+    fetchQuote();
+  }, []);
 
   return (
     <ClientOnly>
       <div className="min-h-screen w-full relative overflow-hidden">
-      <div className="gradient-bg">
-        <BackgroundSVG />
-        <div className="gradients-container">
-          <div className="g1"></div>
-          <div className="g2"></div>
-          <div className="g3"></div>
-          <div className="g4"></div>
-          <div className="g5"></div>
-          <ClientOnly>
-            <InteractiveBubble />
-          </ClientOnly>
-        </div>
-      </div>
-
-      <nav className="absolute z-20 flex justify-center items-center bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg shadow-lg w-[90%] md:w-3/2 my-8 rounded-xl border-2 border-white/20 left-1/2 transform -translate-x-1/2">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center h-16">
-            <div className="flex-shrink-0">
-              <span className="text-white/60 text-2xl font-semibold">EchoWords</span>
-            </div>
+        <div className="gradient-bg">
+          <BackgroundSVG />
+          <div className="gradients-container">
+            <div className="g1"></div>
+            <div className="g2"></div>
+            <div className="g3"></div>
+            <div className="g4"></div>
+            <div className="g5"></div>
+            <ClientOnly>
+              <InteractiveBubble />
+            </ClientOnly>
           </div>
         </div>
-      </nav>
 
-      <div className="absolute inset-0 z-20 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white text-center">{quote}</h1>
+        <Variants />
+
+        <div className="absolute inset-0 z-20 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white/80 text-center">
+            {quote}
+          </h1>
+        </div>
       </div>
-    </div>
     </ClientOnly>
   );
 };
