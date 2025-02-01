@@ -170,7 +170,7 @@ const MotivationContent = () => {
         <Share />
       </button>
       <div className="absolute inset-0 z-20 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white/80 text-center">
+        <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white/90 text-center">
           {quote}
         </h1>
       </div>
