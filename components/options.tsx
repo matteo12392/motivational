@@ -3,6 +3,7 @@
 import { Lightbulb, Users } from "lucide-react"
 import type { Variants } from "motion/react"
 import * as motion from "motion/react-client"
+import { useRouter } from "next/navigation"
 import React from "react"
 import { useEffect, useRef, useState } from "react"
 
@@ -80,15 +81,26 @@ const text = ["ESPRIMI LA TUA!", "CHI SIAMO"]
 const icons = [<Lightbulb />, <Users />]
 
 const MenuItem = ({ i }: { i: number }) => {
+    const router = useRouter();
     const border = `2px solid ${colors[i]}`
     const color = `${colors[i]}`
     const icon = React.cloneElement(icons[i], { style: { ...iconPlaceholder, color } });
+    
+    const handleClick = () => {
+        if (i === 1) { // "CHI SIAMO" button
+            router.push('/about');
+        } else if (i === 0) { // "ESPRIMI LA TUA!" button
+            router.push('/submit');
+        }
+    };
+
     return (
         <motion.li
             style={listItem}
             variants={itemVariants}
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
+            onClick={handleClick}
         >
             {icon}
             <div style={{ ...textPlaceholder, border, color }} >{text[i]}</div>
@@ -164,7 +176,7 @@ const MenuToggle = ({ toggle }: { toggle: () => void }) => (
  */
 
 const container: React.CSSProperties = {
-    position: "relative",
+    position: "fixed", // Changed from "relative"
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "stretch",
@@ -174,6 +186,7 @@ const container: React.CSSProperties = {
     backgroundColor: "var(--accent)",
     borderRadius: 20,
     overflow: "hidden",
+    zIndex: 100, // Added to ensure it stays on top
 }
 
 const nav: React.CSSProperties = {

@@ -164,8 +164,7 @@ const MotivationContent = () => {
       <Variants />
       <button
         onClick={handleShare}
-        className={"m-4 flex justify-center items-center w-[50px] h-[50px] rounded-full absolute bottom-0 z-50 text-white/80 bg-white/20 backdrop-filter backdrop-blur-lg shadow-xl border-2 border-white/20 hover:scale-110 transition-all right-0 " + (showCopied ? "hidden" : "")}
-        title="Copy link to clipboard"
+        className={"m-4 flex justify-center items-center w-[50px] h-[50px] rounded-full fixed bottom-4 right-4 z-50 text-white/80 bg-white/20 backdrop-filter backdrop-blur-lg shadow-xl border-2 border-white/20 hover:scale-110 transition-all " + (showCopied ? "hidden" : "")}        title="Copy link to clipboard"
       >
         <Share />
       </button>
