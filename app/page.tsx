@@ -6,6 +6,7 @@ import Variants from '../components/options';
 import { Share } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
+import { useDeviceDetection } from '@/utils/device-detection';
 
 // Separate client-only component for interactive elements
 const InteractiveBubble = () => {
@@ -126,8 +127,6 @@ const MotivationContent = () => {
         const randomQuote = data[Math.floor(Math.random() * data.length)];
         setQuote(randomQuote.phrase);
         setQuoteId(randomQuote.id);
-        // Update URL with the new quote ID
-        router.replace(`?id=${randomQuote.id}`);
       }
     };
 
@@ -144,11 +143,13 @@ const MotivationContent = () => {
     setTimeout(() => setShowCopied(false), 4500);
   };
 
+  const isMobile = useDeviceDetection()
+
   return (
     <div className="min-h-screen w-full relative overflow-hidden">
       <div className="gradient-bg">
         <BackgroundSVG />
-        <div className="gradients-container">
+        <div className={isMobile ? "gradients-container" : "gradients-container-desktop"}>
           <div className="g1"></div>
           <div className="g2"></div>
           <div className="g3"></div>

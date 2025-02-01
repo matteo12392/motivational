@@ -78,9 +78,9 @@ body {
   height: 100%;
 }
 
-.gradients-container {
-  filter: blur(25px);
-  -webkit-filter: blur(25px);
+.gradients-container-desktop {
+  filter: url(#goo) blur(40px);
+  -webkit-filter: url(#goo) blur(40px);
   width: 100%;
   height: 100%;
   position: absolute;
@@ -88,7 +88,7 @@ body {
   left: 0;
 }
 
-.gradients-container-desktop {
+.gradients-container {
   filter: blur(25px);
   -webkit-filter: blur(25px);
   width: 100%;
