@@ -86,18 +86,15 @@ const AboutPage = () => {
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white/90 text-center mb-8">
           Chi Siamo
         </h1>
-        <div className="text-lg sm:text-xl text-white/80 text-center space-y-6 backdrop-blur-sm bg-white/20 p-8 rounded-xl border-2 border-white/20">
+        <div className="text-lg sm:text-xl text-white/80 space-y-6 backdrop-blur-sm bg-white/20 p-8 rounded-xl border-2 border-white/20">
           <p>
-            Benvenuti a MotivaMe! Siamo un team appassionato dedicato a diffondere 
-            positività e ispirazione attraverso citazioni motivazionali.
-          </p>
-          <p>
-            La nostra missione è semplice: vogliamo aiutare le persone a trovare 
-            la motivazione quotidiana di cui hanno bisogno per perseguire i loro sogni 
+            Ciao! Siamo Matteo, Martina, Alessia, Marco e Cristina, degli allievi della Soft Skills Academy di Lecce
+            e la nostra missione è semplice: vogliamo aiutare le persone a trovare
+            la motivazione quotidiana di cui hanno bisogno per perseguire i loro sogni
             e superare le sfide della vita.
           </p>
           <p>
-            Crediamo nel potere delle parole e nella loro capacità di trasformare 
+            Crediamo nel potere delle parole e nella loro capacità di trasformare
             prospettive e ispirare azioni positive.
           </p>
         </div>
@@ -106,4 +103,4 @@ const AboutPage = () => {
   );
 };
 
-export default AboutPage; 
+export default AboutPage;
