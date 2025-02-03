@@ -121,6 +121,10 @@ const SubmitPage = () => {
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white/90 text-center mb-8">
           Condividi la Tua Frase
         </h1>
+        <p className="text-lg sm:text-xl text-white/80 text-center mb-8 max-w-2xl backdrop-blur-sm bg-white/10 p-6 rounded-xl border border-white/10">
+          Condividi con noi quella frase speciale che ti ha ispirato o motivato nella tua vita.
+          La tua frase potrebbe essere esattamente ciò di cui qualcun altro ha bisogno oggi.
+        </p>
         <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6 backdrop-blur-sm bg-white/20 p-8 rounded-xl border-2 border-white/20">
           <div>
             <label htmlFor="userName" className="block text-lg text-white/90 mb-2">

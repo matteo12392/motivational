@@ -76,7 +76,7 @@ const itemVariants = {
 }
 
 const colors = ["#7700FFe6", "#4400FFe6"]
-const text = ["ESPRIMI LA TUA!", "CHI SIAMO"]
+const text = ["SCRVI LA TUA!", "CHI SIAMO"]
 // eslint-disable-next-line react/jsx-key
 const icons = [<Lightbulb />, <Users />]
 
