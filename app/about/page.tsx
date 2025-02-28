@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Instagram } from 'lucide-react';
 
 const InteractiveBubble = () => {
   const interBubbleRef = useRef<HTMLDivElement>(null);
@@ -59,6 +59,15 @@ const BackgroundSVG = () => (
   </svg>
 );
 
+// Instagram profile links and info
+const teamMembers = [
+  { name: "Matteo", instagram: "https://instagram.com/matteo.lucrezio" },
+  { name: "Martina", instagram: "https://instagram.com/martinastefanizzi_" },
+  { name: "Alessia", instagram: "https://instagram.com/alessia.leucci" },
+  { name: "Marco", instagram: "https://instagram.com/marcogalati01" },
+  { name: "Cristina", instagram: "https://instagram.com/" },
+];
+
 const AboutPage = () => {
   const router = useRouter();
 
@@ -97,6 +106,24 @@ const AboutPage = () => {
             Crediamo nel potere delle parole e nella loro capacità di trasformare
             prospettive e ispirare azioni positive.
           </p>
+
+          <div className="mt-8 pt-6 border-t border-white/20">
+            <h2 className="text-xl font-semibold text-white/90 mb-4">Seguici su Instagram</h2>
+            <div className="flex flex-wrap justify-center gap-4">
+              {teamMembers.map((member, index) => (
+                <a
+                  key={index}
+                  href={member.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-lg border border-white/20 transition-all hover:scale-105"
+                >
+                  <Instagram size={18} />
+                  <span>{member.name}</span>
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
